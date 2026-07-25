@@ -16,7 +16,7 @@ const question = "How long do refunds take?";
 
 const docs: Doc[] = [
   { id: "policy-v2", text: "Refunds are processed within 5 business days.", ageDays: 3, relevance: 0.9 },
-  { id: "policy-v1", text: "Refunds are processed within 5 business days.", ageDays: 400, relevance: 0.9 }, // stale dup
+  { id: "policy-v1", text: "Refunds are processed within 8 business days.", ageDays: 400, relevance: 0.9 }, // stale dup
   { id: "old-promo", text: "Refunds took up to 30 days during our 2019 pilot.", ageDays: 2500, relevance: 0.8 },
   { id: "faq", text: "You can track a refund from the billing page.", ageDays: 10, relevance: 0.6 },
 ];

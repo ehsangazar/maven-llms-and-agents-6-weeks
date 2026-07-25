@@ -1,5 +1,0 @@
-# S4 · Workshop: design your context pipeline
-
-Part of [Week 2 · Context Engineering & Retrieval](..). Workshop session, no
-runnable companion yet. You sketch the retrieval and assembly pipeline you will
-build in [Lab 2 · Hybrid RAG](../lab-hybrid-rag).

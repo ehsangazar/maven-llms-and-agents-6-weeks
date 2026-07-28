@@ -1,13 +1,13 @@
-# Week 5 · Evals & Observability
+# Week 5 · Evals & observability
 
-Grading trajectories, not just final outputs, and the tracing and runbook that
-tell you when a change made things worse.
+Grading the path, not just the answer, and seeing what the system actually did
+in production.
 
 | # | Folder | What it is |
 |---|--------|-----------|
-| S9 | [`s9-trajectory-evals`](s9-trajectory-evals) | Trajectory evals, not just outputs |
-| S10 | [`s10-eval-workshop`](s10-eval-workshop) | Workshop: harness, tracing & runbook |
-| Lab 5 | [`lab-eval-harness`](lab-eval-harness) | Build an eval harness: golden set, graders, trajectory check, regression report |
+| S9 | [`s09-trajectory-evals`](s09-trajectory-evals) | Output vs trajectory evals, graders, offline and online |
+| S10 | [`s10-harness-tracing`](s10-harness-tracing) | Tracing, dashboards, prompt versioning, the runbook |
+| Lab 5 | [`lab-eval-harness`](lab-eval-harness) | Golden set, graders, trajectory check, pass-rate report that catches a planted regression |
 
-The session folders are lecture/workshop companions and currently hold notes
-only; the lab is where you build.
+Plant the regression yourself. A harness you have never seen fail is not
+evidence that it works.

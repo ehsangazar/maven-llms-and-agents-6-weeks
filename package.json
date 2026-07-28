@@ -1,8 +1,8 @@
 {
-  "name": "llms-and-agents-labs",
+  "name": "maven-llms-and-agents-6-weeks",
   "version": "0.1.0",
   "private": true,
-  "description": "Companion labs for the gazar.dev course: Production-Ready Systems with LLMs and Agents (gazar.dev/courses/llms-and-agents)",
+  "description": "Companion labs for the 6-week cohort: Production-Ready Systems with LLMs and Agents (hub.gazar.dev/llms-and-agents)",
   "type": "module",
   "scripts": {
     "lab": "tsx --env-file-if-exists=.env",

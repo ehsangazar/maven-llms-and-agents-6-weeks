@@ -1,13 +1,13 @@
-# Week 3 · Cost, Latency & Reliability
+# Week 3 · Cost, latency & reliability
 
-Budgets per request, routing to the cheapest tier that can do the job, and
-designing for the failure that will happen anyway.
+Per-request ceilings you can defend, the levers that hold them, and what happens
+when a call fails anyway.
 
 | # | Folder | What it is |
 |---|--------|-----------|
-| S5 | [`s5-budgets-failure`](s5-budgets-failure) | Budgets, routing, and designing for failure |
-| S6 | [`s6-budget-workshop`](s6-budget-workshop) | Workshop: budget + failure-mode map |
-| Lab 3 | [`lab-cost-latency`](lab-cost-latency) | Add a budget, semantic cache, fallback ladder, and an idempotency key |
+| S5 | [`s05-cost-latency-reliability`](s05-cost-latency-reliability) | Budgets, routing, caching, and designing for non-determinism |
+| S6 | [`s06-budget-failure-map`](s06-budget-failure-map) | Putting numbers on it: the budget and the failure-mode map |
+| Lab 3 | [`lab-budget-cache-fallback`](lab-budget-cache-fallback) | Budget, semantic cache, fallback ladder, idempotency key |
 
-The session folders are lecture/workshop companions and currently hold notes
-only; the lab is where you build.
+The idempotency key is the part people leave out. A retry that double-charges is
+a reliability feature that became an incident.

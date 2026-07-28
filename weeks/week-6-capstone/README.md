@@ -1,13 +1,14 @@
-# Week 6 · Capstone
+# Week 6 · Shipping it: design, present, defend
 
-Integrate Labs 1 to 5 into one system, defend it in a design review, and write
-the seven-section design document.
+Everything from the five weeks before, pulled into one design you can defend to
+a staff panel.
 
 | # | Folder | What it is |
 |---|--------|-----------|
-| S11 | [`s11-design-clinic`](s11-design-clinic) | Capstone design clinic |
-| S12 | [`s12-presentations`](s12-presentations) | Design-review presentations + wrap |
-| Lab 6 | [`lab-capstone`](lab-capstone) | Integrate & defend: one system, one entry point, the design doc, an eval run |
+| S11 | [`s11-capstone-clinic`](s11-capstone-clinic) | The end-to-end design, with live feedback |
+| S12 | [`s12-design-review`](s12-design-review) | Presenting and defending it, then what to practise next |
+| Lab 6 | [`lab-capstone-integration`](lab-capstone-integration) | Labs 1-5 behind one entry point, plus the seven-section design document |
 
-The session folders are lecture/workshop companions and currently hold notes
-only; the lab is where you build.
+Run Lab 5's harness against Lab 6's integrated system before you present.
+Walking in with a pass-rate number is the difference between a claim and
+evidence.

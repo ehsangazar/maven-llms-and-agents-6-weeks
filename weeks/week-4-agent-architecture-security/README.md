@@ -1,13 +1,13 @@
-# Week 4 · Agent Architecture & Security
+# Week 4 · Agent architecture & security
 
-Agent patterns and the ways they fail, then how to secure one: least-privilege
-tools, approval gates, and defending both poisoned documents and poisoned tools.
+Tool use, planning loops and memory, each mapped to how it breaks. Then the
+attack surface an agent opens the moment it can act.
 
 | # | Folder | What it is |
 |---|--------|-----------|
-| S7 | [`s7-agent-patterns`](s7-agent-patterns) | Agent patterns and their failure modes |
-| S8 | [`s8-securing-agents`](s8-securing-agents) | Securing agents + choose your architecture |
-| Lab 4 | [`lab-guardrailed-agent`](lab-guardrailed-agent) | Build a tool-using ReAct agent with guardrails, and survive two hostile inputs |
+| S7 | [`s07-agent-architecture`](s07-agent-architecture) | Tools and outputs as contracts, single vs multi-agent, failure modes |
+| S8 | [`s08-securing-agents`](s08-securing-agents) | Prompt injection, tool poisoning, least-privilege tooling, output guardrails |
+| Lab 4 | [`lab-guardrailed-agent`](lab-guardrailed-agent) | ReAct agent, step cap, approval gate before writes, refuses an injected document |
 
-The session folders are lecture/workshop companions and currently hold notes
-only; the lab is where you build.
+If you only have time for one lab in the course, make it this one. The guardrails
+are the part people skip and then need at 2am.

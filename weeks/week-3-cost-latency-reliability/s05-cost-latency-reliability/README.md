@@ -59,9 +59,14 @@ it is a quiet one.
 
 ### `real-world/` · the whole thing on one job
 
-[Moderation on a budget that fails closed](real-world/README.md): a cheap
-classifier, escalation only when it is unsure, and a hard per-request budget that
-blocks rather than allows when it runs out.
+[A production bug investigator that survives the incident](real-world/README.md).
+An on-call assistant that correlates deploys, pulls the log lines that matter and
+proposes a cause with evidence, under a deadline and a spend ceiling, with a
+breaker on the log backend.
+
+It is the right job for this session because the dependency it needs is the one
+that is down: log search degrades precisely when there is an incident. Replay it
+naive, guarded, and guarded-with-the-backend-down, and watch the difference.
 
 ## Where this goes next
 

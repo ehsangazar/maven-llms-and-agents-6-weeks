@@ -5,15 +5,31 @@
  * inspects is data you wrote, not a model you called.
  *
  * Run it:  npm run lab weeks/week-3-cost-latency-reliability/s06-budget-failure-map/review.ts
+ *          npm run lab .../review.ts --investigator
  *
- * Point it at your own Project 2 by importing yours instead of the example.
+ * Point it at your own Project 2 by importing yours instead of an example.
  */
 
 import { reviewBudget } from "./budget/budget.ts";
 import { rank, reviewMap, score, silentShare } from "./failure-map/map.ts";
 import { uncoveredLayers } from "./failure-map/taxonomy.ts";
 import { lintEntry } from "./runbook/runbook.ts";
-import { BUDGET, FAILURE_MAP, LATENCY_ENTRY, RETRIEVAL_ENTRY } from "./example/support-assistant.ts";
+import * as support from "./example/support-assistant.ts";
+import * as investigator from "./example/bug-investigator.ts";
+
+const artifact = process.argv.includes("--investigator")
+  ? {
+      BUDGET: investigator.INVESTIGATOR_BUDGET,
+      FAILURE_MAP: investigator.INVESTIGATOR_MAP,
+      ENTRIES: [investigator.UNGROUNDED_ENTRY],
+    }
+  : {
+      BUDGET: support.BUDGET,
+      FAILURE_MAP: support.FAILURE_MAP,
+      ENTRIES: [support.LATENCY_ENTRY, support.RETRIEVAL_ENTRY],
+    };
+
+const { BUDGET, FAILURE_MAP, ENTRIES } = artifact;
 
 const pct = (n: number) => `${Math.round(n * 100)}%`;
 
@@ -48,7 +64,7 @@ const mapReview = reviewMap(FAILURE_MAP);
 report("map", mapReview.violations, mapReview.warnings);
 
 heading("Runbook entries");
-for (const entry of [LATENCY_ENTRY, RETRIEVAL_ENTRY]) {
+for (const entry of ENTRIES) {
   const smells = lintEntry(entry);
   console.log(`  ${entry.failure}`);
   report("    entry", smells.map((s) => s.message), []);

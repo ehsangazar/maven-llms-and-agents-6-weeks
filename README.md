@@ -82,15 +82,22 @@ schedule, is at
 
 **Week 1 is complete.** Both lesson companions are fully worked and runnable,
 and `lab-workflow-router` ships a starter, a worked solution and its full test
-suite. It is the reference for how all of this looks in code.
+suite. It is the reference for how a lab looks in code.
+
+**Week 3 is complete.** `s05-cost-latency-reliability` is the mechanisms
+(cost arithmetic, the deadline split, prefix and answer caching, routing,
+batching, retries with jitter, a circuit breaker, idempotent effects) and
+`s06-budget-failure-map` is the artifacts (the budget, the failure-mode map and
+the runbook entry, each as typed data with a linter, plus a fully worked example
+that passes its own rubric). All of it runs offline.
 
 **Labs 2 to 6 are specified, not scaffolded.** Each has a README describing what
 you build, and the corresponding course lesson carries the steps, the acceptance
 criteria and the code shape. Build them in your own codebase against that spec,
 or wait for the starter to land here.
 
-The session companions for weeks 2 to 6 hold notes and small runnable snippets
-rather than complete worked examples.
+The session companions for weeks 2, 4, 5 and 6 hold notes and small runnable
+snippets rather than complete worked examples.
 
 The course copy says exactly this, and the two are kept in step. If that stops
 being true, the course is the thing to fix.

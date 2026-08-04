@@ -70,7 +70,7 @@ limitation.
 | 1 · [Foundations](weeks/week-1-foundations) | [`s01-why-demos-die`](weeks/week-1-foundations/s01-why-demos-die) · [`s02-code-model-boundary`](weeks/week-1-foundations/s02-code-model-boundary) | [`lab-workflow-router`](weeks/week-1-foundations/lab-workflow-router): classify a request and dispatch to the right handler, with schema-validated output |
 | 2 · [Context engineering and retrieval](weeks/week-2-context-retrieval) | [`s03-context-engineering`](weeks/week-2-context-retrieval/s03-context-engineering) · [`s04-context-pipeline`](weeks/week-2-context-retrieval/s04-context-pipeline) | [`lab-hybrid-rag`](weeks/week-2-context-retrieval/lab-hybrid-rag): keyword plus vector, re-ranking, chunking |
 | 3 · [Cost, latency and reliability](weeks/week-3-cost-latency-reliability) | [`s05-cost-latency-reliability`](weeks/week-3-cost-latency-reliability/s05-cost-latency-reliability) · [`s06-budget-failure-map`](weeks/week-3-cost-latency-reliability/s06-budget-failure-map) | [`lab-budget-cache-fallback`](weeks/week-3-cost-latency-reliability/lab-budget-cache-fallback): per-request budgets, caching, fallback ladders |
-| 4 · [Agent architecture and security](weeks/week-4-agent-architecture-security) | [`s07-agent-architecture`](weeks/week-4-agent-architecture-security/s07-agent-architecture) (the loop, tools, planning, durability, multi-agent, all runnable) · [`s08-securing-agents`](weeks/week-4-agent-architecture-security/s08-securing-agents) | [`lab-guardrailed-agent`](weeks/week-4-agent-architecture-security/lab-guardrailed-agent): a guardrailed ReAct agent with tool-approval gates and injection defence |
+| 4 · [Agent architecture and security](weeks/week-4-agent-architecture-security) | [`s07-agent-architecture`](weeks/week-4-agent-architecture-security/s07-agent-architecture) (the loop, tools, planning, durability, multi-agent, all runnable) · [`s08-securing-agents`](weeks/week-4-agent-architecture-security/s08-securing-agents) (boundary, capabilities, approvals, egress, supply chain, red-team suite) | [`lab-guardrailed-agent`](weeks/week-4-agent-architecture-security/lab-guardrailed-agent): a guardrailed ReAct agent with tool-approval gates and injection defence |
 | 5 · [Evals and observability](weeks/week-5-evals-observability) | [`s09-trajectory-evals`](weeks/week-5-evals-observability/s09-trajectory-evals) · [`s10-harness-tracing`](weeks/week-5-evals-observability/s10-harness-tracing) | [`lab-eval-harness`](weeks/week-5-evals-observability/lab-eval-harness): a trajectory-based eval harness with regression detection |
 | 6 · [Shipping it](weeks/week-6-capstone) | [`s11-capstone-clinic`](weeks/week-6-capstone/s11-capstone-clinic) · [`s12-design-review`](weeks/week-6-capstone/s12-design-review) | [`lab-capstone-integration`](weeks/week-6-capstone/lab-capstone-integration): integrate labs 1 to 5 behind one entry point, plus the seven-section design document |
 
@@ -101,13 +101,27 @@ and the compounding math that decides how long a run may be), `durability/`
 Plus a worked order support agent and `decide.ts`, which prints the four
 decisions for your own system. All of it runs offline.
 
+**S8 is complete.** `s08-securing-agents` is the defence, one folder per layer:
+`boundary/` (untrusted content as a branded type, invisible-character scrubbing,
+a fence with a per-request nonce), `privilege/` (capabilities granted from the
+user's own permissions, scoped to exact values, and dropped entirely the moment
+untrusted content enters the run), `approval/` (a yes bound to exact arguments,
+single use, expiring, and grantable only by a human), `egress/` (scheme,
+credential and internal-address checks, an exact-match host allow-list, and
+Markdown image exfiltration stripped), and `supply-chain/` (pin a fingerprint of
+what you reviewed, catch the rug pull, flag cross-server shadowing). Plus
+`redteam/`, nine payloads that run against the real hardened path, and
+`threat-model.ts`, which prints the Project 3 answer for your own system.
+
+Every S8 test uses a model that falls for the injection every time, on purpose.
+
 **Labs 2 to 6 are specified, not scaffolded.** Each has a README describing what
 you build, and the corresponding course lesson carries the steps, the acceptance
 criteria and the code shape. Build them in your own codebase against that spec,
 or wait for the starter to land here.
 
-The session companions for weeks 2, 5 and 6, and S8 in week 4, hold notes and
-small runnable snippets rather than complete worked examples.
+The session companions for weeks 2, 5 and 6 hold notes and small runnable
+snippets rather than complete worked examples.
 
 The course copy says exactly this, and the two are kept in step. If that stops
 being true, the course is the thing to fix.

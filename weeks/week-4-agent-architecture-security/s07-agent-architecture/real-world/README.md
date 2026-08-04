@@ -1,22 +1,32 @@
-# S7 real-world · A ReAct loop and its step-cap guardrail
+# S7 real-world · the agent that refuses the refund it was asked for
 
-The S7 lesson on a real job: an agent that answers a support question by looping
-(pick an action, run a tool, observe, repeat) until it decides it is done. The
-characteristic agent failure is not a crash, it is a **runaway** that never
-finishes, so the loop carries a step cap that turns "bills forever" into "stops
-and says so".
+The S7 session on a real job: a customer writes in about an order, and the agent
+looks it up, reads the policy, and either refunds it or explains why it cannot.
 
-[`agent.ts`](agent.ts) is pure and deps-injected (the policy and tools are
-parameters), so the loop and its cap are testable with **no API key**.
+It is the right job for this session because every architecture choice is
+visible in it, and each one is testable:
+
+| Choice | Where it lives |
+|---|---|
+| Narrow tools, typed arguments | `createSupportRegistry` in [`support.ts`](support.ts) |
+| The rule enforced server-side | the GBP cap re-checked inside `issue_refund`, not in the prompt |
+| Effects declared | `lookup_order` is `read`, `issue_refund` is `irreversible` |
+| Retry safety | the `refunded` map: the same order refunded twice returns the first receipt |
+| A bounded run | `handleTicket` passes a step cap and a budget to `runAgent` |
 
 ### The spec is the test (offline, no key)
 
 ```bash
-npm test
+npx vitest run weeks/week-4-agent-architecture-security/s07-agent-architecture
 ```
 
-**Watch for:** the observation being fed back into the policy, and the runaway
-policy hitting the cap at exactly `maxSteps` instead of looping forever.
+**Watch for** the test named *"refuses an over-limit refund in the TOOL,
+whatever the model asked for"*. The scripted policy does everything right,
+politely, and still asks for a GBP 950 refund. Nothing in the prompt stops it.
+The tool does.
+
+Then *"recovers when the model invents a tool that does not exist"*: a
+hallucinated `run_sql` costs one step and a readable error, not the run.
 
 ### The live demo (needs `OPENROUTER_API_KEY`)
 
@@ -24,5 +34,13 @@ policy hitting the cap at exactly `maxSteps` instead of looping forever.
 npm run lab weeks/week-4-agent-architecture-security/s07-agent-architecture/real-world/index.ts
 ```
 
-**Watch for:** the model choosing to call `lookup_plan` before answering, and
-the step count staying under the cap. Lab 4 hardens this loop with guardrails.
+Two tickets go through, one inside the policy and one outside it. **Watch for**
+the model looking the order up before answering, the refusal arriving as an
+observation that the model then has to explain to the customer, and the run
+stopping on its own with a `stopReason` you can read.
+
+### Where it goes next
+
+[Lab 4 · Guardrailed Agent](../../lab-guardrailed-agent) takes this same loop and
+adds the security layer: an approval gate before writes, and a retrieved
+document that tries to talk the agent into a refund it should refuse.

@@ -1,27 +1,30 @@
 /**
- * S7 real-world example, the runnable demo (needs OPENROUTER_API_KEY).
+ * S7 real-world · the runnable demo (needs OPENROUTER_API_KEY).
  *
- * A real model drives the ReAct loop as the policy, choosing between a `lookup`
- * tool and finishing. The step cap is still there as the guardrail. Watch the
- * turn-by-turn actions the model chooses.
+ * A real model drives the loop as the policy. Everything else, the tools, the
+ * step cap, the budget, the server-side refund rules, is the same code the
+ * offline tests exercise. That is the point: the model is a parameter.
  *
- * Run it:  npm run lab weeks/week-4-agent-architecture-security/s07-agent-architecture/real-world/index.ts
+ * Run it:
+ *   npm run lab weeks/week-4-agent-architecture-security/s07-agent-architecture/real-world/index.ts
+ *
+ * Watch for: it looks the order up before answering, the GBP 950 order gets
+ * refused by the TOOL rather than by the prompt, and the run stops on its own.
  */
 import { z } from "zod";
 import { extract } from "../../../../common/llm.ts";
-import { runAgent, type Policy, type Tools } from "./agent.ts";
+import { renderHistory, type Policy } from "../loop/agent.ts";
+import { createSupportDeps, createSupportRegistry, describeTools, handleTicket } from "./support.ts";
 
 const MODEL = process.env.LLM_MODEL ?? "openai/gpt-4o-mini";
 
-const PLANS: Record<string, string> = { "ada@example.com": "Pro ($49/mo), renews 2026-08-01" };
-const tools: Tools = {
-  lookup_plan: async (email) => PLANS[email] ?? "no plan on file",
-};
+const deps = createSupportDeps();
+const catalogue = describeTools(createSupportRegistry(deps));
 
 const ActionSchema = z.object({
   kind: z.enum(["tool", "final"]),
   name: z.string().default(""),
-  arg: z.string().default(""),
+  args: z.string().default("{}"),
   text: z.string().default(""),
 });
 
@@ -31,23 +34,49 @@ const policy: Policy = async (history) => {
       {
         role: "system",
         content:
-          "You are a support agent using a ReAct loop. Tools: lookup_plan(email). " +
-          "Return kind='tool' with name and arg to call a tool, or kind='final' with text when done. " +
-          "Do not invent plan details; look them up.",
+          "You are a support agent. Work in a loop: pick ONE tool, read the observation, then decide again.\n" +
+          `Tools:\n${catalogue}\n` +
+          "Return kind='tool' with name and args (args is a JSON object encoded as a string), " +
+          "or kind='final' with text when you are done. Never invent order details: look them up. " +
+          "Never claim a refund happened unless a tool said so.",
       },
-      { role: "user", content: history.join("\n") },
+      { role: "user", content: renderHistory(history) },
     ],
     ActionSchema,
     "action",
     { model: MODEL },
   );
+
   if (decided.kind === "tool") {
-    console.log(`  -> tool ${decided.name}(${decided.arg})`);
-    return { kind: "tool", name: decided.name, arg: decided.arg };
+    const args = safeParse(decided.args);
+    console.log(`  step -> ${decided.name}(${JSON.stringify(args)})`);
+    return { action: { kind: "tools", calls: [{ name: decided.name, args }] }, costUsd: 0.0004 };
   }
-  return { kind: "final", text: decided.text };
+  return { action: { kind: "final", text: decided.text }, costUsd: 0.0004 };
 };
 
-const run = await runAgent("From: ada@example.com, when does my plan renew?", policy, tools);
-console.log(`\nsteps: ${run.steps} (cap not hit: ${!run.hitCap})`);
-console.log("answer:", run.answer);
+function safeParse(raw: string): unknown {
+  try {
+    return JSON.parse(raw);
+  } catch {
+    // Malformed arguments are not a crash. The registry hands back a readable
+    // error and the model gets another turn to fix it.
+    return { _raw: raw };
+  }
+}
+
+const tickets = [
+  "Order o-1001 turned up damaged, can I get my money back?",
+  "Please refund order o-2002, I changed my mind.",
+];
+
+for (const ticket of tickets) {
+  console.log(`\n--- ${ticket}`);
+  const run = await handleTicket(ticket, policy, deps, { tenantId: "acme", userId: "u-1" });
+  console.log(
+    `stop: ${run.stopReason} · steps: ${run.steps} · tools: ${run.toolCalls} · $${run.spentUsd.toFixed(4)}`,
+  );
+  console.log(`answer: ${run.answer}`);
+}
+
+console.log(`\nrefunds actually issued: ${[...deps.refunded.keys()].join(", ") || "none"}`);

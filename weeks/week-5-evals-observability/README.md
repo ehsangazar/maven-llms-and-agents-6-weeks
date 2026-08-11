@@ -5,7 +5,7 @@ in production.
 
 | # | Folder | What it is |
 |---|--------|-----------|
-| S9 | [`s09-trajectory-evals`](s09-trajectory-evals) | Output vs trajectory evals, graders, offline and online |
+| S9 | [`s09-trajectory-evals`](s09-trajectory-evals) | What to grade (`real-world`), who grades it (`judge`), when it blocks a release (`suite`) |
 | S10 | [`s10-harness-tracing`](s10-harness-tracing) | Tracing, dashboards, prompt versioning, the runbook |
 | Lab 5 | [`lab-eval-harness`](lab-eval-harness) | Golden set, graders, trajectory check, pass-rate report that catches a planted regression |
 

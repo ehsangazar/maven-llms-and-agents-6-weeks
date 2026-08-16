@@ -24,10 +24,10 @@ export type Verdict = z.infer<typeof Verdict>;
  * runs of the same judge on the same answer land in the same place.
  */
 export const GROUNDING_RUBRIC = [
-  "PASS only if the answer's factual claims are supported by the supplied context.",
-  "FAIL if it states a policy, amount, or date that the context does not contain.",
+  "PASS only if every factual claim is supported by the context.",
+  "FAIL on any policy, amount or date the context does not contain.",
   "FAIL if it hedges so hard it makes no claim at all.",
-  "Length is not quality. A short grounded answer beats a long unsupported one.",
+  "Length is not quality. Short and grounded beats long and unsupported.",
 ].join("\n");
 
 export interface JudgeInput {
@@ -47,13 +47,17 @@ export async function judgeAnswer(
   rubric: string = GROUNDING_RUBRIC,
   opts: { model?: string } = {},
 ): Promise<Verdict> {
+  const system = `You are a strict grader. Apply this rubric exactly:\n${rubric}`;
+  const user = [
+    `QUESTION\n${input.question}`,
+    `CONTEXT THE AGENT WAS GIVEN\n${input.context}`,
+    `ANSWER TO GRADE\n${input.answer}`,
+  ].join("\n\n");
+
   return extract(
     [
-      { role: "system", content: `You are a strict grader. Apply this rubric exactly:\n${rubric}` },
-      {
-        role: "user",
-        content: `QUESTION\n${input.question}\n\nCONTEXT THE AGENT WAS GIVEN\n${input.context}\n\nANSWER TO GRADE\n${input.answer}`,
-      },
+      { role: "system", content: system },
+      { role: "user", content: user },
     ],
     Verdict,
     "verdict",

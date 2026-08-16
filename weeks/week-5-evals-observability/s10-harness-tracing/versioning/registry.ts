@@ -34,7 +34,7 @@ export class PromptRegistry {
 
   /**
    * Resolve the exact text a trace ran. This is the whole point: six months
-   * later, "answer@9f2c1b" still returns the bytes the model was given.
+   * later, "answer@e7aa2e" still returns the bytes the model was given.
    */
   get(id: string): Prompt | undefined {
     return this.byId.get(id);
